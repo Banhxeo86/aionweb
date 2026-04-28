@@ -110,7 +110,8 @@
   overflow-x: auto;
   scroll-behavior: smooth;
   scrollbar-width: none;
-  padding: 1rem 0 2rem;
+  padding: 3rem 1rem 4rem; /* 상단 1rem -> 3rem, 하단 2rem -> 4rem으로 확대하여 공간 확보 */
+  margin: 0 -1rem; /* 패딩으로 인한 좌우 밀림 방지 */
 }
 
 .sliderContainer::-webkit-scrollbar {
@@ -133,10 +134,11 @@
 }
 
 .squareCard:hover {
-  transform: translateY(-15px) scale(1.03);
+  transform: translateY(-20px) scale(1.03); /* 위로 조금 더 띄워서 입체감 강조 */
   border-color: var(--primary);
-  box-shadow: 0 30px 60px rgba(0, 74, 153, 0.2);
+  box-shadow: 0 40px 80px rgba(0, 74, 153, 0.25);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+  z-index: 10; /* 커진 카드가 주변 카드나 요소 위로 올라오도록 설정 */
 }
 
 .cardHeader {
