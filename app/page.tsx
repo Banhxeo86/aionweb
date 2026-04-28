@@ -49,9 +49,26 @@ function MaterialSlider({ category, title }: { category: string, title: string }
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
-      const { scrollLeft, clientWidth } = scrollRef.current;
+      const { scrollLeft, clientWidth, scrollWidth } = scrollRef.current;
       const scrollAmount = clientWidth * 0.8;
-      const scrollTo = direction === 'left' ? scrollLeft - scrollAmount : scrollLeft + scrollAmount;
+      
+      let scrollTo;
+      if (direction === 'left') {
+        // 맨 앞에 도달했을 때 왼쪽을 누르면 맨 끝으로 이동
+        if (scrollLeft <= 10) {
+          scrollTo = scrollWidth;
+        } else {
+          scrollTo = scrollLeft - scrollAmount;
+        }
+      } else {
+        // 맨 끝에 도달했을 때 오른쪽을 누르면 맨 앞으로 이동
+        if (scrollLeft + clientWidth >= scrollWidth - 10) {
+          scrollTo = 0;
+        } else {
+          scrollTo = scrollLeft + scrollAmount;
+        }
+      }
+      
       scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
     }
   };
