@@ -1,0 +1,231 @@
+.heroWrapper {
+  position: relative;
+  height: 300px;
+  overflow: hidden;
+}
+
+.heroBg {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroOverlay {
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2));
+  backdrop-filter: blur(2px);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.heroTitle {
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: white;
+  margin: 0;
+  letter-spacing: 4px;
+  text-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
+}
+
+.heroSubtitle {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: 0.5rem;
+  font-weight: 500;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.materialsMain {
+  padding: 4rem 0;
+}
+
+.categorySection {
+  margin-bottom: 5rem;
+}
+
+.categoryHeader {
+  margin-bottom: 2rem;
+}
+
+.categoryTitle {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+}
+
+.sliderControls {
+  display: none;
+}
+
+.sliderBtn {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  color: var(--foreground);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  box-shadow: var(--shadow);
+}
+
+.prevBtn {
+  left: -25px;
+}
+
+.nextBtn {
+  right: -25px;
+}
+
+.sliderBtn:hover {
+  background: var(--primary);
+  color: white;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.sliderWrapper {
+  position: relative;
+  padding: 0 1rem;
+}
+
+.sliderContainer {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  padding: 1rem 0 2rem;
+}
+
+.sliderContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.squareCard {
+  width: 320px;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 36px;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-decoration: none;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.squareCard:hover {
+  transform: translateY(-15px) scale(1.03);
+  border-color: var(--primary);
+  box-shadow: 0 30px 60px rgba(0, 74, 153, 0.2);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+}
+
+.cardHeader {
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.categoryBadge {
+  background: var(--primary);
+  color: white;
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 10px rgba(0, 74, 153, 0.3);
+}
+
+.linkIcon {
+  color: var(--primary);
+  opacity: 0.4;
+  transition: all 0.3s ease;
+}
+
+.squareCard:hover .linkIcon {
+  opacity: 1;
+  transform: rotate(45deg);
+}
+
+.cardContent {
+  padding: 1rem 2rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.cardTitle {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: var(--foreground);
+  line-height: 1.3;
+}
+
+.cardDesc {
+  font-size: 1rem;
+  color: var(--secondary);
+  line-height: 1.7;
+  opacity: 0.8;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.cardFooter {
+  padding: 1.5rem 2rem;
+  margin-top: auto;
+}
+
+.viewMore {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--primary);
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+}
+
+.squareCard:hover .viewMore {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 2.5rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1.1rem;
+  }
+
+  .squareCard {
+    min-width: 240px;
+    height: 240px;
+  }
+}
