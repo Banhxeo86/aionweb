@@ -218,7 +218,38 @@
 }
 
 @media (max-width: 768px) {
-  .careerGrid {
-    grid-template-columns: 1fr;
+  .page {
+    padding: 2rem 1rem;
+    margin-top: 60px;
+  }
+
+  .title {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .categoryCard {
+    padding: 1.5rem;
+    border-radius: 20px;
+  }
+
+  .catTitle {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .expItem {
+    gap: 0.8rem;
+    flex-direction: column;
+  }
+
+  .year {
+    min-width: auto;
+    font-size: 0.85rem;
+    padding-top: 0;
+  }
+
+  .text {
+    font-size: 0.95rem;
   }
 }

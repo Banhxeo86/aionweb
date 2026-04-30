@@ -149,23 +149,51 @@
 
 @media (max-width: 768px) {
   .container {
-    padding: 2rem 1rem;
+    padding: 1.5rem 1rem;
+    margin-top: 60px; /* 헤더 높이만큼 마진 추가 */
   }
   
+  .backBtn {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+
   .contentArea {
-    padding: 2rem;
+    padding: 2rem 1.5rem;
   }
   
   .title {
-    font-size: 2rem;
+    font-size: 1.8rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .description {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .mainContent {
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
   }
   
   .thumbnailArea {
-    height: 250px;
+    height: 220px;
   }
   
   .actions {
     flex-direction: column;
     align-items: stretch;
+    gap: 1rem;
+  }
+
+  .linkBtn {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+
+  .fileBtn {
+    justify-content: center;
+    padding: 0.5rem;
   }
 }

@@ -238,16 +238,54 @@
 }
 
 @media (max-width: 768px) {
+  .heroWrapper {
+    height: 220px;
+  }
+
   .heroTitle {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
+    letter-spacing: 2px;
   }
 
   .heroSubtitle {
-    font-size: 1.1rem;
+    font-size: 1rem;
+  }
+
+  .materialsMain {
+    padding: 2rem 0;
+  }
+
+  .categoryTitle {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .sliderContainer {
+    gap: 1rem;
+    padding: 1.5rem 0.5rem 3rem;
+    margin: 0;
+    scroll-padding: 1rem;
+    -webkit-overflow-scrolling: touch; /* 부드러운 터치 스크롤 활성화 */
   }
 
   .squareCard {
-    min-width: 240px;
-    height: 240px;
+    width: 260px;
+    border-radius: 24px;
+  }
+
+  .cardImage {
+    height: 140px;
+  }
+
+  .cardTitle {
+    font-size: 1.2rem;
+  }
+
+  .cardDesc {
+    font-size: 0.85rem;
+  }
+
+  .sliderBtn {
+    display: none; /* 모바일에서는 화살표 버튼 대신 스와이프 유도 */
   }
 }

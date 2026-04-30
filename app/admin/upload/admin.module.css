@@ -91,7 +91,35 @@
 }
 
 @media (max-width: 768px) {
+  .page {
+    padding: 2rem 1rem;
+    margin-top: 60px;
+  }
+
   .uploadCard {
-    padding: 2rem;
+    padding: 2rem 1.5rem;
+    border-radius: 20px;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+  }
+
+  .form {
+    gap: 1.5rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .actions button {
+    width: 100%;
   }
 }
