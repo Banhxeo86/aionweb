@@ -51,12 +51,13 @@ export default function MaterialDetailPage() {
     );
   }
 
-  const categoryName = {
+  const categoryMap: Record<string, string> = {
     edu: '교육용자료',
     class: '학급운영자료',
     work: '업무용자료',
     etc: '기타자료'
-  }[material.category as keyof typeof categoryName] || '기타자료';
+  };
+  const categoryName = categoryMap[material.category] || '기타자료';
 
   return (
     <div className={`fade-in ${styles.container}`}>
