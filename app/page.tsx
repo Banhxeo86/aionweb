@@ -84,16 +84,20 @@ function MaterialSlider({ category, title }: { category: string, title: string }
 
           <div className={styles.sliderContainer} ref={scrollRef}>
             {materials.map((item) => (
-              <a
+              <Link
                 key={item.id}
-                href={item.link_url || '#'}
-                target={item.link_url && item.link_url !== '#' ? "_blank" : "_self"}
-                rel="noopener noreferrer"
+                href={`/materials/detail/${item.id}`}
                 className={`glass ${styles.squareCard}`}
               >
-                <div className={styles.cardHeader}>
-                  <div className={styles.categoryBadge}>{title.split('자료')[0]}</div>
-                  <ExternalLink size={18} className={styles.linkIcon} />
+                <div className={styles.cardImage}>
+                  {item.thumbnail_url ? (
+                    <img src={item.thumbnail_url} alt={item.title} className={styles.thumbnail} />
+                  ) : (
+                    <div className={styles.thumbnailPlaceholder}>
+                      <span>{title.split('자료')[0]}</span>
+                    </div>
+                  )}
+                  <div className={styles.categoryBadgeOverlay}>{title.split('자료')[0]}</div>
                 </div>
                 <div className={styles.cardContent}>
                   <h3 className={styles.cardTitle}>{item.title}</h3>
@@ -102,7 +106,7 @@ function MaterialSlider({ category, title }: { category: string, title: string }
                 <div className={styles.cardFooter}>
                   <span className={styles.viewMore}>자세히 보기 →</span>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
 

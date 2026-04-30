@@ -19,6 +19,7 @@ export default function UploadPage() {
   const [content, setContent] = useState('');
   const [linkUrl, setLinkUrl] = useState('');
   const [file, setFile] = useState<File | null>(null);
+  const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<any>(null);
   const router = useRouter();
@@ -43,14 +44,15 @@ export default function UploadPage() {
 
     try {
       let file_url = '';
+      let thumbnail_url = '';
 
       // 1. File Upload to Supabase Storage
       if (file) {
         const fileExt = file.name.split('.').pop();
         const fileName = `${Math.random()}.${fileExt}`;
-        const filePath = `${fileName}`;
+        const filePath = `files/${fileName}`;
 
-        const { error: uploadError, data } = await supabase.storage
+        const { error: uploadError } = await supabase.storage
           .from('materials')
           .upload(filePath, file);
 
@@ -63,7 +65,26 @@ export default function UploadPage() {
         file_url = publicUrl;
       }
 
-      // 2. Data Insert to Supabase DB
+      // 2. Thumbnail Upload
+      if (thumbnail) {
+        const fileExt = thumbnail.name.split('.').pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const filePath = `thumbnails/${fileName}`;
+
+        const { error: thumbError } = await supabase.storage
+          .from('materials')
+          .upload(filePath, thumbnail);
+
+        if (thumbError) throw thumbError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('materials')
+          .getPublicUrl(filePath);
+        
+        thumbnail_url = publicUrl;
+      }
+
+      // 3. Data Insert to Supabase DB
       const { error: dbError } = await supabase
         .from('materials')
         .insert([
@@ -73,6 +94,7 @@ export default function UploadPage() {
             category,
             content,
             file_url,
+            thumbnail_url,
             link_url: linkUrl,
             author_id: user.id,
           },
@@ -153,7 +175,17 @@ export default function UploadPage() {
           </div>
 
           <div className={styles.inputGroup}>
-            <label>첨부 파일</label>
+            <label>썸네일 이미지 (자동 적용)</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setThumbnail(e.target.files?.[0] || null)}
+              className={styles.fileInput}
+            />
+          </div>
+
+          <div className={styles.inputGroup}>
+            <label>첨부 파일 (선택사항)</label>
             <input
               type="file"
               onChange={(e) => setFile(e.target.files?.[0] || null)}

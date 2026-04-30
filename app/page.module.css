@@ -120,101 +120,121 @@
 
 .squareCard {
   width: 320px;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 0.85 / 1; /* 가로보다 세로가 약간 더 긴 직사각형으로 변경 */
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  border-radius: 36px;
+  border-radius: 32px;
   transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   text-decoration: none;
   overflow: hidden;
   position: relative;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .squareCard:hover {
-  transform: translateY(-20px) scale(1.03); /* 위로 조금 더 띄워서 입체감 강조 */
+  transform: translateY(-15px);
   border-color: var(--primary);
-  box-shadow: 0 40px 80px rgba(0, 74, 153, 0.25);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
-  z-index: 10; /* 커진 카드가 주변 카드나 요소 위로 올라오도록 설정 */
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-.cardHeader {
-  padding: 1.5rem 2rem;
+.cardImage {
+  width: 100%;
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+}
+
+.thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.squareCard:hover .thumbnail {
+  transform: scale(1.1);
+}
+
+.thumbnailPlaceholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0, 74, 153, 0.4), rgba(0, 212, 255, 0.2));
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1.2rem;
+  opacity: 0.5;
 }
 
-.categoryBadge {
+.categoryBadgeOverlay {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
   background: var(--primary);
   color: white;
   padding: 0.4rem 1rem;
   border-radius: 50px;
   font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.5px;
-  box-shadow: 0 4px 10px rgba(0, 74, 153, 0.3);
-}
-
-.linkIcon {
-  color: var(--primary);
-  opacity: 0.4;
-  transition: all 0.3s ease;
-}
-
-.squareCard:hover .linkIcon {
-  opacity: 1;
-  transform: rotate(45deg);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 2;
 }
 
 .cardContent {
-  padding: 1rem 2rem;
+  padding: 1.5rem;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 
 .cardTitle {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 800;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
   color: var(--foreground);
   line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .cardDesc {
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: var(--secondary);
-  line-height: 1.7;
+  line-height: 1.6;
   opacity: 0.8;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
 .cardFooter {
-  padding: 1.5rem 2rem;
+  padding: 1.5rem;
   margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .viewMore {
   font-size: 0.9rem;
   font-weight: 700;
   color: var(--primary);
-  opacity: 0;
-  transform: translateX(-10px);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   transition: all 0.3s ease;
 }
 
 .squareCard:hover .viewMore {
-  opacity: 1;
-  transform: translateX(0);
+  gap: 1rem;
 }
 
 @media (max-width: 768px) {
