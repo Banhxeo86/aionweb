@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import { useRouter } from 'next/navigation';
-import styles from './admin.module.css';
+import { useRouter, useParams } from 'next/navigation';
+import styles from '../../upload/admin.module.css';
 
 const CATEGORIES = [
   { id: 'edu', name: '교육용자료' },
@@ -12,30 +12,72 @@ const CATEGORIES = [
   { id: 'etc', name: '기타자료' },
 ];
 
-export default function UploadPage() {
+export default function EditPage() {
+  const params = useParams();
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('edu');
   const [content, setContent] = useState('');
   const [linkUrl, setLinkUrl] = useState('');
-  const [file, setFile] = useState<File | null>(null);
-  const [thumbnail, setThumbnail] = useState<File | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState<any>(null);
-  const router = useRouter();
+  const [existingFileUrl, setExistingFileUrl] = useState('');
+  const [existingThumbnailUrl, setExistingThumbnailUrl] = useState('');
+  
+  const [newFile, setNewFile] = useState<File | null>(null);
+  const [newThumbnail, setNewThumbnail] = useState<File | null>(null);
 
   useEffect(() => {
-    const checkUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        alert('관리자 로그인이 필요합니다.');
-        router.push('/login');
-      } else {
+    const fetchData = async () => {
+      try {
+        // 1. Check Auth
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          alert('관리자 로그인이 필요합니다.');
+          router.push('/login');
+          return;
+        }
         setUser(session.user);
+
+        // 2. Fetch Material
+        const { data: material, error } = await supabase
+          .from('materials')
+          .select('*')
+          .eq('id', params.id)
+          .single();
+
+        if (error) throw error;
+
+        // Check ownership
+        if (material.author_id !== session.user.id) {
+          alert('수정 권한이 없습니다.');
+          router.push('/');
+          return;
+        }
+
+        // 3. Set State
+        setTitle(material.title);
+        setDescription(material.description);
+        setCategory(material.category);
+        setContent(material.content);
+        setLinkUrl(material.link_url || '');
+        setExistingFileUrl(material.file_url || '');
+        setExistingThumbnailUrl(material.thumbnail_url || '');
+      } catch (error: any) {
+        console.error('Error fetching data:', error);
+        alert('데이터를 불러오지 못했습니다.');
+      } finally {
+        setLoading(false);
       }
     };
-    checkUser();
-  }, [router]);
+
+    if (params.id) {
+      fetchData();
+    }
+  }, [params.id, router]);
 
   const generateFileName = (file: File) => {
     const parts = file.name.split('.');
@@ -45,28 +87,25 @@ export default function UploadPage() {
     return `${Date.now()}-${sanitizedName}.${extension}`;
   };
 
-  const handleUpload = async (e: React.FormEvent) => {
+  const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
-    setLoading(true);
+    setSubmitting(true);
 
     try {
-      let file_url = '';
-      let thumbnail_url = '';
+      let file_url = existingFileUrl;
+      let thumbnail_url = existingThumbnailUrl;
 
-      // 1. File Upload to Supabase Storage
-      if (file) {
-        const fileName = generateFileName(file);
+      // 1. New File Upload
+      if (newFile) {
+        const fileName = generateFileName(newFile);
         const filePath = `files/${fileName}`;
 
         const { error: uploadError } = await supabase.storage
           .from('materials')
-          .upload(filePath, file);
+          .upload(filePath, newFile);
 
-        if (uploadError) {
-          console.error('File upload error:', uploadError);
-          throw new Error(`파일 업로드 실패: ${uploadError.message}`);
-        }
+        if (uploadError) throw uploadError;
 
         const { data: { publicUrl } } = supabase.storage
           .from('materials')
@@ -75,19 +114,16 @@ export default function UploadPage() {
         file_url = publicUrl;
       }
 
-      // 2. Thumbnail Upload
-      if (thumbnail) {
-        const fileName = generateFileName(thumbnail);
+      // 2. New Thumbnail Upload
+      if (newThumbnail) {
+        const fileName = generateFileName(newThumbnail);
         const filePath = `thumbnails/${fileName}`;
 
         const { error: thumbError } = await supabase.storage
           .from('materials')
-          .upload(filePath, thumbnail);
+          .upload(filePath, newThumbnail);
 
-        if (thumbError) {
-          console.error('Thumbnail upload error:', thumbError);
-          throw new Error(`썸네일 업로드 실패: ${thumbError.message}`);
-        }
+        if (thumbError) throw thumbError;
 
         const { data: { publicUrl } } = supabase.storage
           .from('materials')
@@ -96,47 +132,42 @@ export default function UploadPage() {
         thumbnail_url = publicUrl;
       }
 
-      // 3. Data Insert to Supabase DB
+      // 3. Data Update
       const { error: dbError } = await supabase
         .from('materials')
-        .insert([
-          {
-            title,
-            description,
-            category,
-            content,
-            file_url,
-            thumbnail_url,
-            link_url: linkUrl,
-            author_id: user.id,
-          },
-        ]);
+        .update({
+          title,
+          description,
+          category,
+          content,
+          file_url,
+          thumbnail_url,
+          link_url: linkUrl,
+        })
+        .eq('id', params.id);
 
-      if (dbError) {
-        console.error('Database insert error:', dbError);
-        throw new Error(`데이터 저장 실패: ${dbError.message}`);
-      }
+      if (dbError) throw dbError;
 
-      alert('자료가 성공적으로 업로드되었습니다!');
-      router.push(`/materials/${category}`);
+      alert('자료가 성공적으로 수정되었습니다!');
+      router.push(`/materials/detail/${params.id}`);
       router.refresh();
     } catch (error: any) {
-      console.error('Full upload process error:', error);
-      alert(`업로드 실패: ${error.message}`);
+      console.error('Update failed:', error);
+      alert(`수정 실패: ${error.message}`);
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   };
 
-  if (!user) return <div className="container" style={{ padding: '10rem 0', textAlign: 'center' }}>로딩 중...</div>;
+  if (loading) return <div className="container" style={{ padding: '10rem 0', textAlign: 'center' }}>로딩 중...</div>;
 
   return (
     <div className={`container fade-in ${styles.page}`}>
       <div className={`glass ${styles.uploadCard}`}>
-        <h1 className={styles.title}>새 자료 업로드</h1>
-        <p className={styles.subtitle}>연구회원들과 공유할 새로운 자료를 등록하세요.</p>
+        <h1 className={styles.title}>자료 수정하기</h1>
+        <p className={styles.subtitle}>등록된 자료의 내용을 수정합니다.</p>
 
-        <form onSubmit={handleUpload} className={styles.form}>
+        <form onSubmit={handleUpdate} className={styles.form}>
           <div className={styles.inputGroup}>
             <label>제목</label>
             <input
@@ -191,20 +222,20 @@ export default function UploadPage() {
           </div>
 
           <div className={styles.inputGroup}>
-            <label>썸네일 이미지</label>
+            <label>썸네일 이미지 {existingThumbnailUrl && '(새 파일 선택 시 교체됩니다)'}</label>
             <input
               type="file"
               accept="image/*"
-              onChange={(e) => setThumbnail(e.target.files?.[0] || null)}
+              onChange={(e) => setNewThumbnail(e.target.files?.[0] || null)}
               className={styles.fileInput}
             />
           </div>
 
           <div className={styles.inputGroup}>
-            <label>첨부 파일 (선택사항)</label>
+            <label>첨부 파일 {existingFileUrl && '(새 파일 선택 시 교체됩니다)'}</label>
             <input
               type="file"
-              onChange={(e) => setFile(e.target.files?.[0] || null)}
+              onChange={(e) => setNewFile(e.target.files?.[0] || null)}
               className={styles.fileInput}
             />
           </div>
@@ -213,8 +244,8 @@ export default function UploadPage() {
             <button type="button" onClick={() => router.back()} className={styles.cancelBtn}>
               취소
             </button>
-            <button type="submit" className="auth-btn" disabled={loading}>
-              {loading ? '업로드 중...' : '자료 등록하기'}
+            <button type="submit" className="auth-btn" disabled={submitting}>
+              {submitting ? '수정 중...' : '수정 완료하기'}
             </button>
           </div>
         </form>

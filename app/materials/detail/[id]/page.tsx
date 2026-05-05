@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ChevronLeft, ExternalLink, Download, FileText } from 'lucide-react';
+import { ChevronLeft, ExternalLink, Download, FileText, Edit2, Trash2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import styles from './detail.module.css';
 
@@ -12,18 +12,24 @@ export default function MaterialDetailPage() {
   const router = useRouter();
   const [material, setMaterial] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    const fetchMaterial = async () => {
+    const fetchData = async () => {
       try {
-        const { data, error } = await supabase
+        // 1. Fetch Material
+        const { data: materialData, error: materialError } = await supabase
           .from('materials')
           .select('*')
           .eq('id', params.id)
           .single();
 
-        if (error) throw error;
-        setMaterial(data);
+        if (materialError) throw materialError;
+        setMaterial(materialData);
+
+        // 2. Fetch User Session
+        const { data: { session } } = await supabase.auth.getSession();
+        setUser(session?.user ?? null);
       } catch (error) {
         console.error('Error fetching material:', error);
       } finally {
@@ -32,9 +38,28 @@ export default function MaterialDetailPage() {
     };
 
     if (params.id) {
-      fetchMaterial();
+      fetchData();
     }
   }, [params.id]);
+
+  const handleDelete = async () => {
+    if (!window.confirm('정말로 이 자료를 삭제하시겠습니까?')) return;
+
+    try {
+      const { error } = await supabase
+        .from('materials')
+        .delete()
+        .eq('id', material.id);
+
+      if (error) throw error;
+
+      alert('자료가 삭제되었습니다.');
+      router.push('/');
+      router.refresh();
+    } catch (error: any) {
+      alert(`삭제 실패: ${error.message}`);
+    }
+  };
 
   if (loading) {
     return <div className="container" style={{ padding: '10rem 0', textAlign: 'center' }}>로딩 중...</div>;
@@ -58,6 +83,8 @@ export default function MaterialDetailPage() {
     etc: '기타자료'
   };
   const categoryName = categoryMap[material.category] || '기타자료';
+
+  const isAuthor = user && user.id === material.author_id;
 
   return (
     <div className={`fade-in ${styles.container}`}>
@@ -108,6 +135,17 @@ export default function MaterialDetailPage() {
               </a>
             )}
           </div>
+
+          {isAuthor && (
+            <div className={styles.adminActions}>
+              <Link href={`/admin/edit/${material.id}`} className={styles.editBtn}>
+                <Edit2 size={16} /> 수정하기
+              </Link>
+              <button onClick={handleDelete} className={styles.deleteBtn}>
+                <Trash2 size={16} /> 삭제하기
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

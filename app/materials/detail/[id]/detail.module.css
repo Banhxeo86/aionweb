@@ -150,7 +150,7 @@
 @media (max-width: 768px) {
   .container {
     padding: 1.5rem 1rem;
-    margin-top: 60px; /* 헤더 높이만큼 마진 추가 */
+    margin-top: 60px;
   }
   
   .backBtn {
@@ -196,4 +196,50 @@
     justify-content: center;
     padding: 0.5rem;
   }
+}
+
+.adminActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  justify-content: flex-end;
+}
+
+.editBtn, .deleteBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  text-decoration: none;
+}
+
+.editBtn {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--secondary);
+  border: 1px solid var(--glass-border);
+}
+
+.editBtn:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.deleteBtn {
+  background: rgba(255, 71, 87, 0.1);
+  color: #ff4757;
+  border: 1px solid rgba(255, 71, 87, 0.2);
+}
+
+.deleteBtn:hover {
+  background: #ff4757;
+  color: white;
 }
