@@ -83,7 +83,12 @@ export default function EditPage() {
     const parts = file.name.split('.');
     const extension = parts.pop();
     const nameWithoutExt = parts.join('.');
-    const sanitizedName = nameWithoutExt.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    // 영문, 숫자 외에는 모두 언더바로 치환
+    let sanitizedName = nameWithoutExt.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    // 만약 한글 파일명이라서 모두 언더바가 되었다면 랜덤 문자열 사용
+    if (!sanitizedName.replace(/_/g, '')) {
+      sanitizedName = Math.random().toString(36).substring(2, 10);
+    }
     return `${Date.now()}-${sanitizedName}.${extension}`;
   };
 

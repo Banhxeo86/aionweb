@@ -44,7 +44,7 @@
 }
 
 .materialsMain {
-  padding: 4rem 0;
+  padding: 6rem 0 4rem; /* 상단 패딩을 늘려 헤더와 겹침 방지 */
 }
 
 .categorySection {
@@ -110,8 +110,8 @@
   overflow-x: auto;
   scroll-behavior: smooth;
   scrollbar-width: none;
-  padding: 3rem 1rem 4rem; /* 상단 1rem -> 3rem, 하단 2rem -> 4rem으로 확대하여 공간 확보 */
-  margin: 0 -1rem; /* 패딩으로 인한 좌우 밀림 방지 */
+  padding: 3rem 1rem 4rem;
+  margin: 0 -1rem;
 }
 
 .sliderContainer::-webkit-scrollbar {
@@ -120,7 +120,7 @@
 
 .squareCard {
   width: 320px;
-  aspect-ratio: 0.85 / 1; /* 가로보다 세로가 약간 더 긴 직사각형으로 변경 */
+  aspect-ratio: 0.85 / 1;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -265,7 +265,7 @@
     padding: 1.5rem 0.5rem 3rem;
     margin: 0;
     scroll-padding: 1rem;
-    -webkit-overflow-scrolling: touch; /* 부드러운 터치 스크롤 활성화 */
+    -webkit-overflow-scrolling: touch;
   }
 
   .squareCard {
@@ -286,6 +286,6 @@
   }
 
   .sliderBtn {
-    display: none; /* 모바일에서는 화살표 버튼 대신 스와이프 유도 */
+    display: none;
   }
 }

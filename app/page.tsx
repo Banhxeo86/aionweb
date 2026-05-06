@@ -130,7 +130,7 @@ export default function Home() {
         >
           <div className={styles.heroOverlay}>
             <h1 className={styles.heroTitle}>AI-ON</h1>
-            <p className={styles.heroSubtitle}>AI교육의 불을 켜다</p>
+            <p className={styles.heroSubtitle}>AI로 교육을 밝히다</p>
           </div>
         </div>
       </section>

@@ -46,13 +46,25 @@ export default function Navbar() {
         <Link href="/materials/etc">기타자료</Link>
         <Link href="/about">연구회 소개</Link>
         <Link href="/contact">문의하기</Link>
-        {user && <Link href="/admin/upload" style={{ color: 'var(--primary)', fontWeight: 'bold' }}>자료 업로드</Link>}
+        {user && (
+          <Link href="/admin/upload" style={{ color: 'var(--primary)', fontWeight: 'bold', whiteSpace: 'nowrap' }}>
+            자료 업로드
+          </Link>
+        )}
       </nav>
 
       <div className="header-actions desktop-only">
         {user ? (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <span style={{ fontSize: '0.8rem', color: 'var(--secondary)' }}>{user.email}님</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', whiteSpace: 'nowrap' }}>
+            <span style={{ 
+              fontSize: '0.8rem', 
+              color: 'var(--secondary)', 
+              maxWidth: '120px', 
+              overflow: 'hidden', 
+              textOverflow: 'ellipsis' 
+            }} title={user.email}>
+              {user.email}님
+            </span>
             <button onClick={handleLogout} className="auth-btn" style={{ background: 'var(--secondary)' }}>로그아웃</button>
           </div>
         ) : (

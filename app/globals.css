@@ -164,18 +164,22 @@ header {
   margin-bottom: 0.5rem;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1150px) {
   header {
     padding: 0 2rem;
   }
   
   .nav-links {
-    gap: 1.5rem;
+    gap: 1.2rem;
     font-size: 0.95rem;
+  }
+
+  .header-actions {
+    gap: 0.5rem;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 950px) {
   header {
     padding: 0 1.5rem;
     height: 60px;
@@ -201,6 +205,8 @@ header {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -1px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .nav-links {
@@ -208,6 +214,7 @@ header {
   gap: 3rem;
   font-weight: 600;
   font-size: 1.1rem;
+  white-space: nowrap;
 }
 
 .nav-links a {

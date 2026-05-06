@@ -1,7 +1,7 @@
 .container {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 4rem 2rem;
+  padding: 6rem 2rem 4rem; /* 상단 패딩을 4rem에서 6rem으로 늘려 헤더와 겹침 방지 */
 }
 
 .backBtn {
