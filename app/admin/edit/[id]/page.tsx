@@ -24,11 +24,6 @@ export default function EditPage() {
   const [category, setCategory] = useState('edu');
   const [content, setContent] = useState('');
   const [linkUrl, setLinkUrl] = useState('');
-  const [existingFileUrl, setExistingFileUrl] = useState('');
-  const [existingThumbnailUrl, setExistingThumbnailUrl] = useState('');
-  
-  const [newFile, setNewFile] = useState<File | null>(null);
-  const [newThumbnail, setNewThumbnail] = useState<File | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,8 +59,6 @@ export default function EditPage() {
         setCategory(material.category);
         setContent(material.content);
         setLinkUrl(material.link_url || '');
-        setExistingFileUrl(material.file_url || '');
-        setExistingThumbnailUrl(material.thumbnail_url || '');
       } catch (error: any) {
         console.error('Error fetching data:', error);
         alert('데이터를 불러오지 못했습니다.');
@@ -79,65 +72,13 @@ export default function EditPage() {
     }
   }, [params.id, router]);
 
-  const generateFileName = (file: File) => {
-    const parts = file.name.split('.');
-    const extension = parts.pop();
-    const nameWithoutExt = parts.join('.');
-    // 영문, 숫자 외에는 모두 언더바로 치환
-    let sanitizedName = nameWithoutExt.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-    // 만약 한글 파일명이라서 모두 언더바가 되었다면 랜덤 문자열 사용
-    if (!sanitizedName.replace(/_/g, '')) {
-      sanitizedName = Math.random().toString(36).substring(2, 10);
-    }
-    return `${Date.now()}-${sanitizedName}.${extension}`;
-  };
-
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
     setSubmitting(true);
 
     try {
-      let file_url = existingFileUrl;
-      let thumbnail_url = existingThumbnailUrl;
-
-      // 1. New File Upload
-      if (newFile) {
-        const fileName = generateFileName(newFile);
-        const filePath = `files/${fileName}`;
-
-        const { error: uploadError } = await supabase.storage
-          .from('materials')
-          .upload(filePath, newFile);
-
-        if (uploadError) throw uploadError;
-
-        const { data: { publicUrl } } = supabase.storage
-          .from('materials')
-          .getPublicUrl(filePath);
-        
-        file_url = publicUrl;
-      }
-
-      // 2. New Thumbnail Upload
-      if (newThumbnail) {
-        const fileName = generateFileName(newThumbnail);
-        const filePath = `thumbnails/${fileName}`;
-
-        const { error: thumbError } = await supabase.storage
-          .from('materials')
-          .upload(filePath, newThumbnail);
-
-        if (thumbError) throw thumbError;
-
-        const { data: { publicUrl } } = supabase.storage
-          .from('materials')
-          .getPublicUrl(filePath);
-        
-        thumbnail_url = publicUrl;
-      }
-
-      // 3. Data Update
+      // 1. Data Update (Simplified: No files/thumbnails)
       const { error: dbError } = await supabase
         .from('materials')
         .update({
@@ -145,8 +86,6 @@ export default function EditPage() {
           description,
           category,
           content,
-          file_url,
-          thumbnail_url,
           link_url: linkUrl,
         })
         .eq('id', params.id);
@@ -212,7 +151,7 @@ export default function EditPage() {
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="자료에 대한 상세 설명을 입력하세요"
-              rows={5}
+              rows={10}
             />
           </div>
 
@@ -223,25 +162,6 @@ export default function EditPage() {
               value={linkUrl}
               onChange={(e) => setLinkUrl(e.target.value)}
               placeholder="클릭 시 이동할 외부 주소(https://...)를 입력하세요"
-            />
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label>썸네일 이미지 {existingThumbnailUrl && '(새 파일 선택 시 교체됩니다)'}</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setNewThumbnail(e.target.files?.[0] || null)}
-              className={styles.fileInput}
-            />
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label>첨부 파일 {existingFileUrl && '(새 파일 선택 시 교체됩니다)'}</label>
-            <input
-              type="file"
-              onChange={(e) => setNewFile(e.target.files?.[0] || null)}
-              className={styles.fileInput}
             />
           </div>
 

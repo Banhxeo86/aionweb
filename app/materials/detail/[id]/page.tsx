@@ -94,17 +94,6 @@ export default function MaterialDetailPage() {
       </Link>
 
       <div className={`glass ${styles.detailCard}`}>
-        <div className={styles.thumbnailArea}>
-          {material.thumbnail_url ? (
-            <img src={material.thumbnail_url} alt={material.title} className={styles.thumbnail} />
-          ) : (
-            <div className={styles.noThumbnail}>
-              <FileText size={48} style={{ marginBottom: '1rem', opacity: 0.5 }} />
-              <span>AI-ON Research Group</span>
-            </div>
-          )}
-        </div>
-
         <div className={styles.contentArea}>
           <header className={styles.header}>
             <span className={styles.categoryBadge}>{categoryName}</span>

@@ -18,8 +18,6 @@ export default function UploadPage() {
   const [category, setCategory] = useState('edu');
   const [content, setContent] = useState('');
   const [linkUrl, setLinkUrl] = useState('');
-  const [file, setFile] = useState<File | null>(null);
-  const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<any>(null);
   const router = useRouter();
@@ -37,71 +35,13 @@ export default function UploadPage() {
     checkUser();
   }, [router]);
 
-  const generateFileName = (file: File) => {
-    const parts = file.name.split('.');
-    const extension = parts.pop();
-    const nameWithoutExt = parts.join('.');
-    // 영문, 숫자 외에는 모두 언더바로 치환
-    let sanitizedName = nameWithoutExt.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-    // 만약 한글 파일명이라서 모두 언더바가 되었다면 랜덤 문자열 사용
-    if (!sanitizedName.replace(/_/g, '')) {
-      sanitizedName = Math.random().toString(36).substring(2, 10);
-    }
-    return `${Date.now()}-${sanitizedName}.${extension}`;
-  };
-
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
     setLoading(true);
 
     try {
-      let file_url = '';
-      let thumbnail_url = '';
-
-      // 1. File Upload to Supabase Storage
-      if (file) {
-        const fileName = generateFileName(file);
-        const filePath = `files/${fileName}`;
-
-        const { error: uploadError } = await supabase.storage
-          .from('materials')
-          .upload(filePath, file);
-
-        if (uploadError) {
-          console.error('File upload error:', uploadError);
-          throw new Error(`파일 업로드 실패: ${uploadError.message}`);
-        }
-
-        const { data: { publicUrl } } = supabase.storage
-          .from('materials')
-          .getPublicUrl(filePath);
-        
-        file_url = publicUrl;
-      }
-
-      // 2. Thumbnail Upload
-      if (thumbnail) {
-        const fileName = generateFileName(thumbnail);
-        const filePath = `thumbnails/${fileName}`;
-
-        const { error: thumbError } = await supabase.storage
-          .from('materials')
-          .upload(filePath, thumbnail);
-
-        if (thumbError) {
-          console.error('Thumbnail upload error:', thumbError);
-          throw new Error(`썸네일 업로드 실패: ${thumbError.message}`);
-        }
-
-        const { data: { publicUrl } } = supabase.storage
-          .from('materials')
-          .getPublicUrl(filePath);
-        
-        thumbnail_url = publicUrl;
-      }
-
-      // 3. Data Insert to Supabase DB
+      // 1. Data Insert to Supabase DB (Simplified: No files/thumbnails)
       const { error: dbError } = await supabase
         .from('materials')
         .insert([
@@ -110,8 +50,6 @@ export default function UploadPage() {
             description,
             category,
             content,
-            file_url,
-            thumbnail_url,
             link_url: linkUrl,
             author_id: user.id,
           },
@@ -181,7 +119,7 @@ export default function UploadPage() {
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="자료에 대한 상세 설명을 입력하세요"
-              rows={5}
+              rows={10}
             />
           </div>
 
@@ -192,25 +130,6 @@ export default function UploadPage() {
               value={linkUrl}
               onChange={(e) => setLinkUrl(e.target.value)}
               placeholder="클릭 시 이동할 외부 주소(https://...)를 입력하세요"
-            />
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label>썸네일 이미지</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setThumbnail(e.target.files?.[0] || null)}
-              className={styles.fileInput}
-            />
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label>첨부 파일 (선택사항)</label>
-            <input
-              type="file"
-              onChange={(e) => setFile(e.target.files?.[0] || null)}
-              className={styles.fileInput}
             />
           </div>
 

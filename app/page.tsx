@@ -31,9 +31,9 @@ function MaterialSlider({ category, title }: { category: string, title: string }
         if (!data || data.length === 0) {
           setMaterials([
             { id: 1, title: `${title} 샘플 1`, description: '등록된 자료가 없습니다. 관리자 페이지에서 자료를 등록해 주세요.', link_url: '#' },
-            { id: 1, title: `${title} 가이드북`, description: '효율적인 수업을 위한 필수 가이드라인과 매뉴얼입니다.', link_url: '#' },
-            { id: 2, title: `${title} 템플릿`, description: '복잡한 업무를 간편하게 처리할 수 있는 문서 양식입니다.', link_url: '#' },
-            { id: 3, title: `${title} 활용 사례`, description: '선생님들이 실제로 적용한 생생한 성공 사례 공유.', link_url: '#' },
+            { id: 2, title: `${title} 가이드북`, description: '효율적인 수업을 위한 필수 가이드라인과 매뉴얼입니다.', link_url: '#' },
+            { id: 3, title: `${title} 템플릿`, description: '복잡한 업무를 간편하게 처리할 수 있는 문서 양식입니다.', link_url: '#' },
+            { id: 4, title: `${title} 활용 사례`, description: '선생님들이 실제로 적용한 생생한 성공 사례 공유.', link_url: '#' },
           ]);
         } else {
           setMaterials(data);
@@ -89,17 +89,11 @@ function MaterialSlider({ category, title }: { category: string, title: string }
                 href={`/materials/detail/${item.id}`}
                 className={`glass ${styles.squareCard}`}
               >
-                <div className={styles.cardImage}>
-                  {item.thumbnail_url ? (
-                    <img src={item.thumbnail_url} alt={item.title} className={styles.thumbnail} />
-                  ) : (
-                    <div className={styles.thumbnailPlaceholder}>
-                      <span>{title.split('자료')[0]}</span>
-                    </div>
-                  )}
-                  <div className={styles.categoryBadgeOverlay}>{title.split('자료')[0]}</div>
-                </div>
                 <div className={styles.cardContent}>
+                  <div className={styles.cardHeader}>
+                    <span className={styles.categoryBadge}>{title.split('자료')[0]}</span>
+                    <ExternalLink size={18} className={styles.linkIcon} />
+                  </div>
                   <h3 className={styles.cardTitle}>{item.title}</h3>
                   <p className={styles.cardDesc}>{item.description}</p>
                 </div>
