@@ -1,7 +1,7 @@
 .container {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 8rem 2rem 4rem; /* 상단 패딩을 8rem으로 대폭 늘려 헤더와 절대 겹치지 않게 함 */
+  padding: 8rem 2rem 4rem;
 }
 
 .backBtn {
@@ -22,7 +22,7 @@
 
 .detailCard {
   border-radius: 32px;
-  overflow: hidden;
+  /* overflow: hidden; 삭제 - 내용이 잘리는 현상 방지 */
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
   background: var(--glass);
   backdrop-filter: blur(20px);
@@ -30,13 +30,13 @@
 }
 
 .contentArea {
-  padding: 4rem;
+  padding: 5rem 4rem 4rem; /* 상단 패딩을 5rem으로 더 늘려 배지/제목 잘림 방지 */
 }
 
 .header {
   margin-bottom: 2.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 2rem;
+  padding-bottom: 2.5rem; /* 아래쪽 여백도 약간 추가 */
 }
 
 .categoryBadge {
@@ -47,11 +47,11 @@
   border-radius: 50px;
   font-size: 0.85rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem; /* 아래 여백 증가 */
 }
 
 .title {
-  font-size: 2.5rem; /* 크기 약간 줄임 */
+  font-size: 2.5rem;
   font-weight: 800;
   color: var(--foreground);
   margin-bottom: 1rem;
@@ -113,7 +113,7 @@
 
 @media (max-width: 768px) {
   .container {
-    padding: 7rem 1rem 3rem; /* 모바일에서도 상단 여백 확보 */
+    padding: 7rem 1rem 3rem;
   }
   
   .backBtn {
@@ -122,7 +122,7 @@
   }
 
   .contentArea {
-    padding: 2rem 1.5rem;
+    padding: 3rem 1.5rem 2.5rem;
   }
   
   .title {
