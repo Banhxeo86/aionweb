@@ -36,18 +36,25 @@
 .header {
   margin-bottom: 2.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 2.5rem; /* 아래쪽 여백도 약간 추가 */
+  padding-bottom: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
 }
 
 .categoryBadge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: var(--primary);
   color: white;
   padding: 0.5rem 1.2rem;
   border-radius: 50px;
   font-size: 0.85rem;
   font-weight: 700;
-  margin-bottom: 1.5rem; /* 아래 여백 증가 */
+  margin-bottom: 0.5rem;
+  white-space: nowrap;
 }
 
 .title {
@@ -127,7 +134,9 @@
   
   .title {
     font-size: 1.8rem;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.5rem;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
 
   .description {

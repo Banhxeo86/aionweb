@@ -89,6 +89,20 @@ header {
   justify-content: space-between;
   padding: 0 4rem;
   transition: all 0.3s ease;
+  overflow: hidden; /* Prevent vertical overflow if any */
+}
+
+@media (max-width: 1150px) {
+  header {
+    padding: 0 2rem;
+  }
+}
+
+@media (max-width: 950px) {
+  header {
+    padding: 0 1rem;
+    height: 60px;
+  }
 }
 
 .desktop-only {
@@ -179,20 +193,6 @@ header {
   }
 }
 
-@media (max-width: 950px) {
-  header {
-    padding: 0 1.5rem;
-    height: 60px;
-  }
-
-  .desktop-only {
-    display: none;
-  }
-
-  .mobile-menu-btn {
-    display: flex;
-  }
-
   .container {
     padding: 0 1.5rem;
   }
@@ -215,6 +215,16 @@ header {
   font-weight: 600;
   font-size: 1.1rem;
   white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.5rem 0;
+  max-width: 100%;
+}
+
+.nav-links::-webkit-scrollbar {
+  display: none;
 }
 
 .nav-links a {
