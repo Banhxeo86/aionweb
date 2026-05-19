@@ -16,11 +16,11 @@ export default function ContactPage() {
           <p>연구회 활동 참여, 자료 공유, 협업 요청 등 다양한 문의를 환영합니다.</p>
           <div className={styles.contactItem}>
             <strong>이메일</strong>
-            <span>support@ai-on.org</span>
+            <span>gw.aion.official@gmail.com</span>
           </div>
           <div className={styles.contactItem}>
             <strong>카카오톡 채널</strong>
-            <span>@AI-ON_Official</span>
+            <span>@AI-ON</span>
           </div>
           <div className={styles.contactItem}>
             <strong>인스타그램</strong>
