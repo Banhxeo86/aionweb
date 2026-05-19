@@ -25,6 +25,7 @@ function MaterialSlider({ category, title }: { category: string, title: string }
           .from('materials')
           .select('*')
           .eq('category', category)
+          .order('sort_order', { ascending: true })
           .order('created_at', { ascending: false });
 
         // If no data, use some sample data for demonstration

@@ -47,9 +47,14 @@ export default function Navbar() {
         <Link href="/about">연구회 소개</Link>
         <Link href="/contact">문의하기</Link>
         {user && (
-          <Link href="/admin/upload" style={{ color: 'var(--primary)', fontWeight: 'bold', whiteSpace: 'nowrap' }}>
-            자료 업로드
-          </Link>
+          <>
+            <Link href="/admin/upload" style={{ color: 'var(--primary)', fontWeight: 'bold', whiteSpace: 'nowrap' }}>
+              자료 업로드
+            </Link>
+            <Link href="/admin/sort" style={{ color: 'var(--primary)', fontWeight: 'bold', whiteSpace: 'nowrap' }}>
+              순서 정렬 관리
+            </Link>
+          </>
         )}
       </nav>
 
@@ -87,9 +92,14 @@ export default function Navbar() {
           <Link href="/about" onClick={toggleMenu}>연구회 소개</Link>
           <Link href="/contact" onClick={toggleMenu}>문의하기</Link>
           {user && (
-            <Link href="/admin/upload" onClick={toggleMenu} style={{ color: 'var(--primary)', fontWeight: 'bold' }}>
-              자료 업로드
-            </Link>
+            <>
+              <Link href="/admin/upload" onClick={toggleMenu} style={{ color: 'var(--primary)', fontWeight: 'bold' }}>
+                자료 업로드
+              </Link>
+              <Link href="/admin/sort" onClick={toggleMenu} style={{ color: 'var(--primary)', fontWeight: 'bold' }}>
+                순서 정렬 관리
+              </Link>
+            </>
           )}
           
           <div className="mobile-auth-section">

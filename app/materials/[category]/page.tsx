@@ -28,6 +28,7 @@ export default function CategoryPage({ params }: { params: Promise<{ category: s
           .from('materials')
           .select('*')
           .eq('category', category)
+          .order('sort_order', { ascending: true })
           .order('created_at', { ascending: false });
 
         if (!error) {

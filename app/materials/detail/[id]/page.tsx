@@ -95,13 +95,13 @@ export default function MaterialDetailPage() {
 
       <div className={`glass ${styles.detailCard}`}>
         <div className={styles.contentArea}>
-          <header className={styles.header}>
+          <div className={styles.header}>
             <span className={styles.categoryBadge}>{categoryName}</span>
             <h1 className={styles.title}>{material.title}</h1>
             <div className={styles.meta}>
               <span>등록일: {new Date(material.created_at).toLocaleDateString()}</span>
             </div>
-          </header>
+          </div>
 
           <p className={styles.description}>{material.description}</p>
           
