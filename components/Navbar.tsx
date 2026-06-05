@@ -42,8 +42,7 @@ export default function Navbar() {
       <nav className="nav-links desktop-only">
         <Link href="/materials/edu">교육용자료</Link>
         <Link href="/materials/class">학급운영자료</Link>
-        <Link href="/materials/work">업무용자료</Link>
-        <Link href="/materials/etc">기타자료</Link>
+        <Link href="/materials/work">업무/기타 자료</Link>
         <Link href="/about">연구회 소개</Link>
         <Link href="/contact">문의하기</Link>
         {user && (
@@ -87,8 +86,7 @@ export default function Navbar() {
         <nav className="mobile-nav-links">
           <Link href="/materials/edu" onClick={toggleMenu}>교육용자료</Link>
           <Link href="/materials/class" onClick={toggleMenu}>학급운영자료</Link>
-          <Link href="/materials/work" onClick={toggleMenu}>업무용자료</Link>
-          <Link href="/materials/etc" onClick={toggleMenu}>기타자료</Link>
+          <Link href="/materials/work" onClick={toggleMenu}>업무/기타 자료</Link>
           <Link href="/about" onClick={toggleMenu}>연구회 소개</Link>
           <Link href="/contact" onClick={toggleMenu}>문의하기</Link>
           {user && (

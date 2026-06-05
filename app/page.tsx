@@ -9,8 +9,7 @@ import styles from './page.module.css';
 const CATEGORIES = [
   { id: 'edu', title: '교육용자료' },
   { id: 'class', title: '학급운영자료' },
-  { id: 'work', title: '업무용자료' },
-  { id: 'etc', title: '기타자료' },
+  { id: 'work', title: '업무/기타 자료' },
 ];
 
 function MaterialSlider({ category, title }: { category: string, title: string }) {
@@ -21,10 +20,11 @@ function MaterialSlider({ category, title }: { category: string, title: string }
   useEffect(() => {
     const fetchMaterials = async () => {
       try {
+        const categories = category === 'work' ? ['work', 'etc'] : [category];
         const { data } = await supabase
           .from('materials')
           .select('*')
-          .eq('category', category)
+          .in('category', categories)
           .order('sort_order', { ascending: true })
           .order('created_at', { ascending: false });
 

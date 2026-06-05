@@ -10,8 +10,7 @@ import styles from './sort.module.css';
 const CATEGORIES = [
   { id: 'edu', name: '교육용자료' },
   { id: 'class', name: '학급운영자료' },
-  { id: 'work', name: '업무용자료' },
-  { id: 'etc', name: '기타자료' },
+  { id: 'work', name: '업무/기타 자료' },
 ];
 
 export default function SortAdminPage() {
@@ -40,10 +39,11 @@ export default function SortAdminPage() {
       if (!user) return;
       setLoading(true);
       try {
+        const categories = category === 'work' ? ['work', 'etc'] : [category];
         const { data, error } = await supabase
           .from('materials')
           .select('*')
-          .eq('category', category)
+          .in('category', categories)
           .order('sort_order', { ascending: true })
           .order('created_at', { ascending: false });
 

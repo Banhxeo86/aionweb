@@ -9,8 +9,7 @@ import styles from './materials.module.css';
 const CATEGORIES: Record<string, string> = {
   edu: '교육용자료',
   class: '학급운영자료',
-  work: '업무용자료',
-  etc: '기타자료',
+  work: '업무/기타 자료',
 };
 
 export default function CategoryPage({ params }: { params: Promise<{ category: string }> }) {
@@ -24,10 +23,11 @@ export default function CategoryPage({ params }: { params: Promise<{ category: s
   useEffect(() => {
     const fetchMaterials = async () => {
       try {
+        const categories = category === 'work' ? ['work', 'etc'] : [category];
         const { data, error } = await supabase
           .from('materials')
           .select('*')
-          .eq('category', category)
+          .in('category', categories)
           .order('sort_order', { ascending: true })
           .order('created_at', { ascending: false });
 
